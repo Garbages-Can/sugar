@@ -1,4 +1,4 @@
-![](./logo.jpg)
+![logo](./logo.png)
 
                     // Sugar //
 
