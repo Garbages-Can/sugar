@@ -1,42 +1,56 @@
-from werkzeug.routing import Map, Rule
+import os
+
+from jinja2 import Environment, FileSystemLoader
 from werkzeug.wrappers import Request, Response
 from werkzeug.exceptions import HTTPException, NotFound
+from werkzeug.routing import Map, Rule
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+template_path = os.path.join(base_dir, 'templates')
+static_path = os.path.join(base_dir, 'static')
+
+jinja_env = Environment(loader=FileSystemLoader(template_path), autoescape=True)
 
 
-class Sugar:
+def render_template(template_name, **context):
+    template = jinja_env.get_template(template_name)
+    return Response(template.render(context), mimetype='text/html')
+
+
+class Sugar():
     """
-    Usually you create a :class:`Sugar` instance in your main module or
-    in the `__init__.py` file of your package like this::
+        Usually you create a :class:`Sugar` instance in your main module or
+        in the `__init__.py` file of your package like this::
 
-    from sugar import Sugar
-    app = Flask()
+        from sugar import Sugar
+        app = Sugar()
     """
+
     secret_key = '9b7+8l35&)ldkw%5w)bg_0f=2^+%o9floh8_v)-4k0n)4^98jl'
 
     def __init__(self):
-        self.url_mappings = dict()
-        self.error_handlers = dict()
+        self.url_mappings = {}
         self.url_map = Map()
 
     def add_url(self, url, endpoint, **options):
         options['endpoint'] = endpoint
-        # there, I use all of HTTP methods.
-        options.setdefault('methods',
-                           ('OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'CONNECT'))
-        self.url_map.add(Rule(url, endpoint))
+        options.setdefault('methods', ('GET',))
+        self.url_map.add(Rule(url, **options))
 
     def url_mapping(self, url: str, **options):
         """
         A decorator that is used to register a view function for a given URL rule.
         for example:
-        @app.url_mapping('/')
+        @app.urlmapping('/')
         def index():
             return render_template('index.html')
 
-        @app.url_mapping('/<username>')
+        @app.urlmapping('/<username>', method=('GET', 'POST'))
         def user(username):
             return render_template('user.html', username=username)
         :param url: endpoint
+        :param methods: a tuple of methods this rule should be limited to (``GET``, ``POST`` etc.).
+                        By default a rule just listens for ``GET`` (and implicitly ``HEAD``).
         """
 
         def decorator(func):
@@ -46,7 +60,22 @@ class Sugar:
 
         return decorator
 
-    def dispatch_request(self, request: Request):
+    def run(self, hostname='localhost', port=10000, **options):
+        """
+        Runs the application on a local development server.
+        If the attribute
+            :`debug` flag is set the server will automatically reload
+        for code changes and show a debugger in case an exception happened.
+            :param host: the hostname to listen on.
+            :param port: the port of the webserver
+            :param options: the options to be forwarded to the underlying Werkzeug server.
+        """
+        from werkzeug.serving import run_simple
+        if 'debug' in options:
+            self.debug = options.get('debug')
+        run_simple(hostname, port, self, **options)
+
+    def dispatch_request(self, request):
         adapter = self.url_map.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
@@ -61,18 +90,3 @@ class Sugar:
 
     def __call__(self, environ, start_response, *args, **kwargs):
         return self.wsgi_app(environ, start_response)
-
-    def run(self, hostname='localhost', port=1129, **options):
-        """
-        Runs the application on a local development server.
-        If the attribute
-            :`debug` flag is set the server will automatically reload
-        for code changes and show a debugger in case an exception happened.
-            :param host: the hostname to listen on.
-            :param port: the port of the webserver
-            :param options: the options to be forwarded to the underlying Werkzeug server.
-        """
-        from werkzeug.serving import run_simple
-        if 'debug' in options:
-            self.debut = options.pop('debug')
-        run_simple(hostname, port, self, **options)
