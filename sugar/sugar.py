@@ -72,7 +72,7 @@ class Sugar():
         """
         from werkzeug.serving import run_simple
         if 'debug' in options:
-            self.debug = options.get('debug')
+            self.debug = options.pop('debug')
         run_simple(hostname, port, self, **options)
 
     def dispatch_request(self, request):
