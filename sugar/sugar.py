@@ -40,3 +40,18 @@ class Sugar:
 
     def __call__(self, environ, start_response, *args, **kwargs):
         return self.wsgi_app(environ, start_response)
+
+    def run(self, hostname='localhost', port=1129, **options):
+        """
+        Runs the application on a local development server.
+        If the attribute
+            :`debug` flag is set the server will automatically reload
+        for code changes and show a debugger in case an exception happened.
+            :param host: the hostname to listen on.
+            :param port: the port of the webserver
+            :param options: the options to be forwarded to the underlying Werkzeug server.
+        """
+        from werkzeug.serving import run_simple
+        if 'debug' in options:
+            self.debut = options.pop('debug')
+        run_simple(hostname, port, self, **options)
