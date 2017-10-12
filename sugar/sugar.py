@@ -14,7 +14,7 @@ class Sugar:
     secret_key = '9b7+8l35&)ldkw%5w)bg_0f=2^+%o9floh8_v)-4k0n)4^98jl'
 
     def __init__(self):
-        self.urlmappings = dict()
+        self.url_mappings = dict()
         self.error_handlers = dict()
         self.url_map = Map()
 
@@ -25,11 +25,32 @@ class Sugar:
                            ('OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'CONNECT'))
         self.url_map.add(Rule(url, endpoint))
 
+    def url_mapping(self, url: str, **options):
+        """
+        A decorator that is used to register a view function for a given URL rule.
+        for example:
+        @app.url_mapping('/')
+        def index():
+            return render_template('index.html')
+
+        @app.url_mapping('/<username>')
+        def user(username):
+            return render_template('user.html', username=username)
+        :param url: endpoint
+        """
+
+        def decorator(func):
+            self.add_url(url, func.__name__, **options)
+            self.url_mappings[func.__name__] = func
+            return func
+
+        return decorator
+
     def dispatch_request(self, request: Request):
         adapter = self.url_map.bind_to_environ(request.environ)
         try:
             endpoint, values = adapter.match()
-            return self.urlmappings[endpoint](**values)
+            return self.url_mappings[endpoint](**values)
         except HTTPException as e:
             return e
 
