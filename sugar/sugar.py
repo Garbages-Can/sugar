@@ -24,3 +24,19 @@ class Sugar:
         options.setdefault('methods',
                            ('OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'CONNECT'))
         self.url_map.add(Rule(url, endpoint))
+
+    def dispatch_request(self, request: Request):
+        adapter = self.url_map.bind_to_environ(request.environ)
+        try:
+            endpoint, values = adapter.match()
+            return self.urlmappings[endpoint](**values)
+        except HTTPException as e:
+            return e
+
+    def wsgi_app(self, environ, start_response):
+        request = Request(environ)
+        response = self.dispatch_request(request)
+        return response(environ, start_response)
+
+    def __call__(self, environ, start_response, *args, **kwargs):
+        return self.wsgi_app(environ, start_response)
