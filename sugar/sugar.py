@@ -1,4 +1,6 @@
 from werkzeug.routing import Map, Rule
+from werkzeug.wrappers import Request, Response
+from werkzeug.exceptions import HTTPException, NotFound
 
 
 class Sugar:
@@ -15,3 +17,10 @@ class Sugar:
         self.urlmappings = dict()
         self.error_handlers = dict()
         self.url_map = Map()
+
+    def add_url(self, url, endpoint, **options):
+        options['endpoint'] = endpoint
+        # there, I use all of HTTP methods.
+        options.setdefault('methods',
+                           ('OPTIONS', 'HEAD', 'GET', 'POST', 'PUT', 'DELETE', 'CONNECT'))
+        self.url_map.add(Rule(url, endpoint))
