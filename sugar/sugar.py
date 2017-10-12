@@ -34,7 +34,7 @@ class Sugar():
 
     def add_url(self, url, endpoint, **options):
         options['endpoint'] = endpoint
-        options.setdefault('methods', ('GET',))
+        options.setdefault('methods', ('GET', 'POST'))
         self.url_map.add(Rule(url, **options))
 
     def url_mapping(self, url: str, **options):
@@ -45,12 +45,10 @@ class Sugar():
         def index():
             return render_template('index.html')
 
-        @app.urlmapping('/<username>', method=('GET', 'POST'))
+        @app.urlmapping('/<username>')
         def user(username):
             return render_template('user.html', username=username)
         :param url: endpoint
-        :param methods: a tuple of methods this rule should be limited to (``GET``, ``POST`` etc.).
-                        By default a rule just listens for ``GET`` (and implicitly ``HEAD``).
         """
 
         def decorator(func):
