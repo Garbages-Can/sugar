@@ -23,7 +23,7 @@ class Sugar():
         in the `__init__.py` file of your package like this::
 
         from sugar import Sugar
-        app = Sugar()
+        sugar = Sugar()
     """
 
     secret_key = '9b7+8l35&)ldkw%5w)bg_0f=2^+%o9floh8_v)-4k0n)4^98jl'
@@ -58,7 +58,7 @@ class Sugar():
 
         return decorator
 
-    def run(self, hostname='localhost', port=10000, **options):
+    def run(self, hostname='localhost', port=1129, **options):
         """
         Runs the application on a local development server.
         If the attribute
