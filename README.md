@@ -28,7 +28,6 @@
 
 在sugar/__sugar__.py文件中有如下:
 
-
 ```
 import os
 
@@ -37,14 +36,23 @@ template_path = os.path.join(base_dir, 'templates')
 static_path = os.path.join(base_dir, 'static')
 ```
 
-base_dir变量获取的是 path/sugar/ 目录,那么之后的两个变量路径是:
+<del>base_dir变量获取的是 path/sugar/ 目录,那么之后的两个变量路径是:</del>
 
->  template_path -> path/sugar/templates
+<del> > template_path -> path/sugar/templates</del>
 
->  static_path   -> path/sugar/static
+<del> > static_path   -> path/sugar/static</del>
 
-那么我们的templates和static这两个文件夹就必须放在path/sugar/中.
-这样极大的限制了我们,如果把这个框架放进: path/python/dist-packages/ 中做库的话.
-那么我们肯定是希望templates和static文件夹,放在我们的项目中而不是框架的目录中.
+<del>那么我们的templates和static这两个文件夹就必须放在path/sugar/中.</del>
+<del>这样极大的限制了我们,如果把这个框架放进: path/python/dist-packages/ 中做库的话.</del>
+<del>那么我们肯定是希望templates和static文件夹,放在我们的项目中而不是框架的目录中.</del>
 
-这是我要首先解决的一个问题.
+<del> 这是我要首先解决的一个问题. </del>
+
+就上面这个问题,已经有了暂时的解决方法,更改了 
+
+sugar/__init__.py 中 base_dir 变量,使其值为上层文件夹路径.
+所以我们的templates和static文件夹可以拿到了外面.
+
+但是还是缺陷. 
+
+缺陷就是如果要使用这个框架就必须把这个框架放在项目中,因为很多环境的配置与那个变量base_dir有关. 所以下一步工作就是当框架文件放在任何地方的时候,项目都可以如期运行.
