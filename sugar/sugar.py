@@ -5,7 +5,8 @@ from werkzeug.wrappers import Request, Response
 from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.routing import Map, Rule
 
-base_dir = os.path.dirname(os.path.abspath(__file__))
+# base_dir = os.path.dirname(os.path.abspath(__file__))
+base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 template_path = os.path.join(base_dir, 'templates')
 static_path = os.path.join(base_dir, 'static')
 
