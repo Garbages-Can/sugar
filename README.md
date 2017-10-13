@@ -26,7 +26,7 @@
 
 ### 就目前来说,还是有不少问题的,比如templates和static文件夹的位置.
 
-在sugar/__sugar__.py文件中有如下:
+在sugar/\_\_sugar\_\_.py文件中有如下:
 
 ```
 import os
@@ -50,7 +50,7 @@ static_path = os.path.join(base_dir, 'static')
 
 就上面这个问题,已经有了暂时的解决方法,更改了 
 
-sugar/__init__.py 中 base_dir 变量,使其值为上层文件夹路径.
+sugar/\_\_init\_\_.py 中 base_dir 变量,使其值为上层文件夹路径.
 所以我们的templates和static文件夹可以拿到了外面.
 
 但是还是缺陷. 
