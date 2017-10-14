@@ -42,11 +42,11 @@ class Sugar():
         """
         A decorator that is used to register a view function for a given URL rule.
         for example:
-        @app.urlmapping('/')
+        @sugar.urlmapping('/')
         def index():
             return render_template('index.html')
 
-        @app.urlmapping('/<username>')
+        @sugar.urlmapping('/<username>')
         def user(username):
             return render_template('user.html', username=username)
         :param url: endpoint
