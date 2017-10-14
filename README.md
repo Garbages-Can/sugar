@@ -11,7 +11,15 @@
         have been done.So, you need a spoon of sugar liberated
         from the saccharification, repeated work.
 
+- #### Edition
 
+> Python3
+
+- #### Dependence
+
+```
+pip install Jinja2
+```
 
 ### 框架可以运行啦!!!
 
