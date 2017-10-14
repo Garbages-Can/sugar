@@ -14,9 +14,10 @@ def user(name):
     return render_template('user.html', name=name)
 
 
+@sugar.error_mapping(404)
+def page_not_found():
+    return render_template('404.html')
+
+
 if __name__ == '__main__':
     sugar.run(debug=True)
-
-    # /home/me/github/Sugar/sugar
-    # /home/me/github/Sugar/sugar/templates
-    # /home/me/github/Sugar/sugar/static
