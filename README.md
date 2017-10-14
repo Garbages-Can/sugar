@@ -11,11 +11,11 @@
         have been done.So, you need a spoon of sugar liberated
         from the saccharification, repeated work.
 
-- #### Edition
+- #### Python version
 
 > Python3
 
-- #### Dependence
+- #### Use pip to install dependency Libraries
 
 ```
 pip install Jinja2
