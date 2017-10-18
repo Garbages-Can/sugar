@@ -6,17 +6,7 @@ from werkzeug.wrappers import Request, Response
 from werkzeug.exceptions import HTTPException, NotFound
 from werkzeug.routing import Map, Rule
 
-# base_dir = os.path.dirname(os.path.abspath(__file__))
-base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-template_path = os.path.join(base_dir, 'templates')
-static_path = os.path.join(base_dir, 'static')
-
-jinja_env = Environment(loader=FileSystemLoader(template_path), autoescape=True)
-
-
-def render_template(template_name, **context):
-    template = jinja_env.get_template(template_name)
-    return Response(template.render(context), mimetype='text/html')
+from . import current_app
 
 
 class Sugar:
@@ -25,12 +15,12 @@ class Sugar:
         in the `__init__.py` file of your package like this::
 
         from sugar import Sugar
-        sugar = Sugar()
+        sugar = Sugar(__name__)
     """
 
     secret_key = '9b7+8l35&)ldkw%5w)bg_0f=2^+%o9floh8_v)-4k0n)4^98jl'
 
-    def __init__(self):
+    def __init__(self, package_name):
         #: the debug flag.  Set this to `True` to enable debugging of
         #: the application.  In debug mode the debugger will kick in
         #: when an unhandled exception ocurrs and the integrated server
@@ -54,6 +44,14 @@ class Sugar:
 
         self.url_map = Map()
         self.func_name_of_404 = None
+
+
+        from ._auxiliary import get_package_path
+        # about 'templates' path, 'static' path and 'jinja environment' configuration
+        self.current_path = get_package_path(package_name)
+        self.template_path = os.path.join(self.current_path, 'templates')
+        self.static_path = os.path.join(self.current_path, 'static')
+        self.jinja_env = Environment(loader=FileSystemLoader(self.template_path), autoescape=True)
 
     def add_url(self, url, endpoint, **options):
         options['endpoint'] = endpoint
@@ -142,3 +140,20 @@ class Sugar:
 
     def __call__(self, environ, start_response, *args, **kwargs):
         return self.wsgi_app(environ, start_response)
+
+    def render_template(self, template_name, **context):
+        template = self.jinja_env.get_template(template_name)
+        return Response(template.render(context), mimetype='text/html')
+
+    def render_template_string(source, **context):
+        """
+        Renders a template from the given template source string
+        with the given context.
+
+        :param template_name: the sourcecode of the template to be
+                              rendered
+        :param context: the variables that should be available in the
+                        context of the template.
+        """
+        current_app.update_template_context(context)
+        return current_app.jinja_env.from_string(source).render(context)
