@@ -1,22 +1,21 @@
 from sugar import Sugar
-from sugar import render_template
 
-sugar = Sugar()
+sugar = Sugar(__name__)
 
 
 @sugar.url_mapping('/')
 def index():
-    return render_template('index.html')
+    return sugar.render_template('index.html')
 
 
 @sugar.url_mapping('/<name>')
 def user(name):
-    return render_template('user.html', name=name)
+    return sugar.render_template('user.html', name=name)
 
 
 @sugar.error_mapping(404)
 def page_not_found():
-    return render_template('404.html')
+    return sugar.render_template('404.html')
 
 
 if __name__ == '__main__':
