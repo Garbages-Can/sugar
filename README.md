@@ -27,7 +27,7 @@ pip install Jinja2
 - template rendering
 - HttpReqeust, HttpResponse
 - context
-- cache
+- cache (thread safty)
 
 ### 框架可以运行啦!!!
 
