@@ -1,4 +1,8 @@
 from sugar import Sugar
+from sugar.util import cache
+
+# the cache is the same as dict
+# cache[key] = value
 
 sugar = Sugar(__name__)
 
@@ -10,7 +14,8 @@ def index():
 
 @sugar.url_mapping('/<name>')
 def user(name):
-    return sugar.render_template('user.html', name=name)
+    cache['name'] = name
+    return sugar.render_template('user.html', name=cache['name'])
 
 
 @sugar.error_mapping(404)
