@@ -20,6 +20,15 @@
 pip install Jinja2
 ```
 
+## feature
+- extensible
+- URL mapping
+- error handling (404,500)
+- template rendering
+- HttpReqeust, HttpResponse
+- context
+- cache
+
 ### 框架可以运行啦!!!
 
 下载本项目后,在Pycharm中打开.
