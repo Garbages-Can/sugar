@@ -45,7 +45,6 @@ class Sugar:
         self.url_map = Map()
         self.func_name_of_404 = None
 
-
         from ._auxiliary import get_package_path
         # about 'templates' path, 'static' path and 'jinja environment' configuration
         self.current_path = get_package_path(package_name)
@@ -69,7 +68,6 @@ class Sugar:
         @sugar.url_mapping('/<username>')
         def user(username):
             return render_template('user.html', username=username)
-        :param url: endpoint
         """
 
         def decorator(func):
