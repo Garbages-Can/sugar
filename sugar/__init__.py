@@ -8,6 +8,8 @@ from ._context import request
 
 from .sugar import Sugar
 
+__version__ = '0.1.0'
+
 
 def url_for(endpoint, **values):
     """Generates a URL to the given endpoint with the method provided.
