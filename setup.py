@@ -23,7 +23,7 @@ setup(
         'Operating System :: OS Independent',
     ],
     keywords="web framework",
-    author="taoliu0509",
+    author="ltoddy",
     author_email="taoliu14@acm.org",
     url="https://github.com/ltoddy/sugar",
     license="MIT License",
