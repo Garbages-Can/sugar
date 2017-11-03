@@ -10,17 +10,12 @@
         have been done.So, you need a spoon of sugar liberated
         from the saccharification, repeated work.
 
-- #### Python version
 
-> Python3
+## Install
 
-- #### Use pip to install dependency Libraries
+> python3 setup.py install
 
-```
-pip install Jinja2
-```
-
-## feature
+## Features
 - extensible
 - URL mapping
 - error handling (404,500)
