@@ -11,9 +11,6 @@
         from the saccharification, repeated work.
 
 
-## Install
-
-> python3 setup.py install
 
 ## Features
 - extensible
@@ -28,14 +25,23 @@
 
 [https://ltoddy.github.io/sugar/docs/](https://ltoddy.github.io/sugar/docs/)
 
-### 框架可以运行啦!!!
 
-下载本项目后,在Pycharm中打开.
+## Usage:
 
-进入demo文件夹.
+> python3 setup.py install
 
-运行manage.py 文件.
+```python
+from sugar import Sugar
 
-![](http://img.vim-cn.com/5d/9c51a291020fe9851e794ba9a67eeef2d15e7d.png)
-![](https://ip.freep.cn/592196/Screenshot%20from%202017-10-12%2010-45-48.png)
-![](https://ip.freep.cn/592196/Screenshot%20from%202017-10-12%2010-46-00.png) 
+
+sugar = Sugar(__name__)
+
+
+@sugar.url_mapping('/')
+def index():
+    return sugar.render_template('index.html')
+
+if __name__ == '__main__':
+    sugar.run(debug=True)
+
+```
