@@ -11,11 +11,11 @@ from . import current_app
 
 class Sugar:
     """
-        Usually you create a :class:`Sugar` instance in your main module or
-        in the `__init__.py` file of your package like this::
+    Usually you create a :class:`Sugar` instance in your main module or
+    in the `__init__.py` file of your package like this::
 
-        from sugar import Sugar
-        sugar = Sugar(__name__)
+    from sugar import Sugar
+    sugar = Sugar(__name__)
     """
 
     secret_key = '9b7+8l35&)ldkw%5w)bg_0f=2^+%o9floh8_v)-4k0n)4^98jl'
@@ -122,7 +122,8 @@ class Sugar:
             return self.error_mappings[self.func_name_of_404](**values)
 
     def wsgi_app(self, environ, start_response):
-        """The actual WSGI application.  This is not implemented in
+        """
+        The actual WSGI application.  This is not implemented in
         `__call__` so that middlewares can be applied:
 
             app.wsgi_app = MyMiddleware(app.wsgi_app)
