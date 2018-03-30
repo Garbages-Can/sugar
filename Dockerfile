@@ -4,4 +4,6 @@ WORKDIR /app
 
 ADD . /app
 
-CMD ["python3", "setup.py", "install"]
+RUN pip3 install -r requirements.txt \
+    && python3 setup.py install
+
